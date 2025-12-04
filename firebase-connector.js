@@ -14,7 +14,7 @@ const corsOptions = {
     
     const allowedOrigins = [
       // 'https://castolin-frontend-production.up.railway.app',
-      'https://castolin-front-end.vercel.app/',
+      'https://castolin-front-end.vercel.app',
       'http://localhost:5173', // Vite dev server
       'http://localhost:3000', // React dev server
       process.env.CLIENT_URL, // From environment variable
