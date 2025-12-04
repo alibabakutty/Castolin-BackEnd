@@ -2,9 +2,40 @@ import express from "express";
 import mysql from "mysql2";
 import cors from "cors";
 import admin from 'firebase-admin';
-import serviceAccount from "./config/serviceAccountKey.json" with { type: "json" }; 
+// import serviceAccount from "./config/serviceAccountKey.json" with { type: "json" }; 
+import dotenv from 'dotenv';
 
-const app = express(); 
+const app = express();
+dotenv.config();
+
+console.log("FIREBASE_SERVICE_ACCOUNT_BASE64:", !!process.env.FIREBASE_SERVICE_ACCOUNT_BASE64);
+console.log("PORT:", process.env.PORT);
+
+const firebaseBase64 = process.env.FIREBASE_SERVICE_ACCOUNT_BASE64;
+
+if (!firebaseBase64) {
+  console.error("❌ Missing FIREBASE_SERVICE_ACCOUNT_BASE64 env variable");
+  process.exit(1);
+}
+
+let serviceAccount = null;
+
+try {
+  serviceAccount = JSON.parse(
+    Buffer.from(firebaseBase64, "base64").toString("utf8")
+  );
+} catch (err) {
+  console.error("❌ Failed to decode Firebase Base64 key:", err);
+  process.exit(1);
+}
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
+}
+
+console.log("🔥 Firebase admin initialized successfully");
 
 // ✅ PROPER CORS CONFIGURATION FOR RAILWAY
 const corsOptions = {
@@ -68,9 +99,9 @@ db.getConnection((err, connection) => {
   }
 });
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+// });
 
 const verifyToken = async (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
