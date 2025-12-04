@@ -13,7 +13,8 @@ const corsOptions = {
     if (!origin) return callback(null, true);
     
     const allowedOrigins = [
-      'https://castolin-frontend-production.up.railway.app', // Your frontend Railway URL
+      // 'https://castolin-frontend-production.up.railway.app',
+      'https://castolin-front-end.vercel.app/',
       'http://localhost:5173', // Vite dev server
       'http://localhost:3000', // React dev server
       process.env.CLIENT_URL, // From environment variable
@@ -160,7 +161,7 @@ app.put("/distributors/:customer_code", async (req, res) => {
   }
 
   // List of allowed fields that can be updated
-  const allowedFields = ['customer_name', 'mobile_number', 'email', 'customer_type', 'password', 'role', 'firebase_uid'];
+  const allowedFields = ['customer_name', 'mobile_number', 'email', 'customer_type', 'password', 'role', 'status', 'firebase_uid'];
   
   // Filter out any fields that are not in the allowed list
   const filteredUpdates = {};
@@ -213,7 +214,7 @@ app.put("/corporates/:customer_code", async (req, res) => {
   }
 
   // List of allowed fields that can be updated
-  const allowedFields = ['customer_name', 'mobile_number', 'email', 'customer_type', 'password', 'role', 'firebase_uid'];
+  const allowedFields = ['customer_name', 'mobile_number', 'email', 'customer_type', 'password', 'role', 'status', 'firebase_uid'];
   
   // Filter out any fields that are not in the allowed list
   const filteredUpdates = {};
